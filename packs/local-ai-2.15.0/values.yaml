@@ -20,10 +20,10 @@ charts:
     deployment:
       image:
         # For Nvidia GPUs uncomment one of the following (cuda11 or cuda12):
-        # image: localai/localai:v2.16.0-cublas-cuda11
-        # image: localai/localai:v2.16.0-cublas-cuda12
-        # image: localai/localai:v2.16.0-cublas-cuda11-ffmpeg (Video Acceleration)
-        # image: localai/localai:v2.16.0-cublas-cuda12-ffmpeg (Video Acceleration)
+        # image: localai/localai:v2.15.0-cublas-cuda11
+        # image: localai/localai:v2.15.0-cublas-cuda12
+        # image: localai/localai:v2.15.0-cublas-cuda11-ffmpeg (Video Acceleration)
+        # image: localai/localai:v2.15.0-cublas-cuda12-ffmpeg (Video Acceleration)
         # More info in Docs: https://localai.io/features/gpu-acceleration/#cudanvidia-acceleration
         repository: quay.io/go-skynet/local-ai
         tag: 2.15.0    
