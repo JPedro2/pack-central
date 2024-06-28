@@ -1,0 +1,21 @@
+{{ if .Values.octane.hasLogEfs }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-log-{{ .Release.Name }}
+spec:
+  capacity:
+    storage: {{ .Values.global.storage }}
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-log
+    namespace: {{ .Release.Namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+   server: {{ .Values.nfs.logServer }}
+   path: {{ .Values.nfs.logPath }}
+{{ end }}

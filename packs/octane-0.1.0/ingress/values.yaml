@@ -1,0 +1,6 @@
+cloudflareSg: ""
+certificate: arn:aws:acm:us-west-2:423919383605:certificate/9f683607-f59a-46c9-8e1d-e332d31078c6
+eks:
+  clusterName: ""
+vpcId: ""
+awsRegion: ""

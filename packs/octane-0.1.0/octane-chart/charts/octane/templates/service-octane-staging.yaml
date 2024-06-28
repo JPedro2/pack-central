@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: octane-staging-service
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: octane
+    {{- if eq .Values.productionSlot "blue" }}
+    hazelcast: green
+    {{- else }}
+    hazelcast: blue
+    {{- end }}
+  annotations:
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  type: "{{ .Values.service.type }}"
+  ports:
+    - port: 8080
+      name: http
+    - port: 8443
+      name: https
+  selector:
+    app: octane
+    {{- if eq .Values.productionSlot "blue" }}
+    slot: green
+    {{- else }}
+    slot: blue
+    {{- end }}

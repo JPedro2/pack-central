@@ -1,0 +1,4 @@
+image: ""
+deleteConf: false
+backupConf: false
+restoreConf: false

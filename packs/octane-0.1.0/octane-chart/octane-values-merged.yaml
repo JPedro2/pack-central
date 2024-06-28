@@ -1,0 +1,140 @@
+clusterRegion: us-west-2
+ecrRegion: us-west-2
+octane:
+  cluster:
+    isCluster: false
+    nodes: kubernetes_auto_discovered
+  db:
+    server:
+      port: 1433
+      dbLoginUser: octaneadmin
+      name: octane-mssql
+    schema:
+      password: "OctaneIsTheOne1!"
+      name: sa_octane
+    service: ''
+    admin:
+      user: 'sa'
+      password: 'OctaneIsTheOne1!'
+    protocol: jdbc:sqlserver
+    type: MSSQL
+  dbAction: CREATE_NEW
+  ngaHeapSize: 4096
+  memRequest: 6000
+  cpuRequest: 1500
+  memLimitAddition: 0
+  cpuLimitAddition: 0
+  initHeapSize: 100
+  initCpuSize: 100
+  limitToOctaneNode: true
+  elasticsearch:
+    username: 'es_admin'
+    password: 'es_admin'
+    clusterName: elasticsearch
+    host: 'octane-es'
+  serverDomain: microfocus.com
+  siteAdminstratorUser: koko
+  siteAdminstratorPassword: momo
+  initString: 'Do one thing every day that scares you. -Eleanor Roosevelt'
+  authTokenEncryptionKey: ''
+  distributedUuid: hazelcastpw
+  backOffice: ''
+  ssoMasterLoginUrl: ''
+  ssoMasterLogoutUrl: ''
+  ssoRedirectToAppUrl: ''
+  saasIntegrationUsername: ''
+  saasIntegrationPassword: ''
+  disableValidatorMemory: true
+  terminatedSessionsTimeoutSeconds: 30
+  oauthClientId: ''
+  oauthClientSecret: ''
+  terminatedSessionsUrl: ''
+  getOauthTokenUrl: ''
+  proxy:
+    host: ''
+    port: ''
+  isSaas: true
+  configJSONAppender: true
+  configS3Appender: false
+  logs_upload_method: jsonAppender
+  replicas: 2
+  updateGoogleAnalytics: true
+  siteParam:
+    exposeServerTimingHeader: true
+    supportExtensionBundles: true
+    googleAnalyticsToken: ''
+    googleAnalyticsMeasurmentId: ''
+    googleAnalyticsAPISecret: ''
+  setEfsSubPath: true
+  setXPack: true
+  xpackKeystorePass: ''
+  hasLogEfs: true
+  pathContext: /
+  debugPort: 5005
+  javaProperties: sun.net.inetaddr.ttl=0
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 50000
+  livenessProbe:
+    initialDelaySeconds: 1800
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 2
+  enabled: true
+  blue:
+    enabled: true
+  productionSlot: blue
+  hazelcastSlot: blue
+  alpineImage: 423919383605.dkr.ecr.us-west-2.amazonaws.com/alpine_rsync:1.3
+  doNotReallocateByAutoscaller: false
+  ttl:
+    enabled: false
+  languages: ''
+  slBdiUrl: https://octane.almoctane.com
+  s3LogPath: octane_logs
+  dashboardUrl: octane-dash.almoctane.com
+  internalCertificate: ''
+  enableDebug: false
+  experimentsEnvType: dev
+  appUrl: https://octane.almoctane.com
+  enableServiceIntegration: false
+nfs:
+  path: /
+  logPath: /
+  server: '<NFS_FILESYSTEM>'
+  logServer: '<NFS_FILESYSTEM>'
+global:
+  maintenanceMode: false
+  storage: 10Ti
+  isNginx: true
+opb:
+  enabled: false
+syncx:
+  enabled: false
+  tg: ''
+mssql:
+  enabled: true
+  password: "OctaneIsTheOne1!"
+elasticsearch:
+  enabled: true
+  heapSize: 2g
+  image: bitnami/elasticsearch:8.6.0
+certificateEls:
+  folder: ''
+  bucket: ''
+cloudflareCertificate: ''
+cnamep: octanep.almoctane.com
+syncxCname: octanex.almoctane.com
+maintenanceCname: octane-maint.almoctane.com
+clusterName: eks-octane
+sync:
+  tg: ''
+prometheus:
+  nfs:
+    server: ''
+managementSg: ''
+cloudflareSg: ''
+
+cname: octane.almoctane.com

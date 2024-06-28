@@ -1,0 +1,11 @@
+{{- if .Values.doNotReallocateByAutoscaller }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: octane-pdb
+spec:
+  minAvailable: 100%
+  selector:
+    matchLabels:
+      app: octane
+{{- end }}

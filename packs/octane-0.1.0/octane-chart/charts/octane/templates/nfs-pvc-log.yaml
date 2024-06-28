@@ -1,0 +1,13 @@
+{{ if .Values.hasLogEfs }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-log
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.global.storage }}
+{{ end }}

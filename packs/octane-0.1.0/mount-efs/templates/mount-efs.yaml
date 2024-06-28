@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-mount-repo-{{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-mount-efs-repo
+    namespace: {{ .Release.Namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+   server: {{ .Values.nfs.server }}
+   path: /
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-mount-log-{{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-mount-efs-log
+    namespace: {{ .Release.Namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+    server: {{ .Values.nfs.logServer }}
+    path: /
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-mount-efs-repo
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-mount-efs-log
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mount-efs
+  namespace: {{ .Release.Namespace }}
+spec:
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: slot
+                operator: In
+                values:
+                  - blue
+                  - green
+          topologyKey: "kubernetes.io/hostname"
+  containers:
+    - name: mount-efs
+      image: {{ .Values.image }}
+      ports:
+        - containerPort: 80
+{{- if .Values.deleteConf }}
+      command: [ 'sh', '-c' ]
+      args:
+        - find /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue -path "*/node-octane-deployment-*" -type f -mtime +60 -regex '.*\.xml' -delete || true && echo "Ignoring errors during deletion";
+          find /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue -path "*/node-octane-deployment-*" -type d -empty -delete || true && echo "Ignoring errors during deletion";
+          find /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green -path "*/node-octane-deployment-*" -type f -mtime +60 -regex '.*\.xml' -delete || true && echo "Ignoring errors during deletion";
+          find /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green -path "*/node-octane-deployment-*" -type d -empty -delete || true && echo "Ignoring errors during deletion";
+{{- else if .Values.backupConf }}
+      command: [ 'sh', '-c' ]
+      args:
+        - mkdir -p /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue-backup;
+          cp -Rf /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue/* /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue-backup || true && echo "Ignoring errors if folder does not exist";
+          mkdir -p /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green-backup;
+          cp -Rf /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green/* /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green-backup || true && echo "Ignoring errors if folder does not exist";
+{{- else if .Values.restoreConf }}
+      command: [ 'sh', '-c' ]
+      args:
+        - mkdir -p /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue;
+          chown octane:octane /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue;
+          mkdir -p /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green;
+          chown octane:octane /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green;
+          cp -Rf /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue-backup/* /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-blue || true && echo "Ignoring errors if folder does not exist";
+          cp -Rf /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green-backup/* /data/{{- if .Values.octane.setEfsSubPath }}{{ .Release.Namespace }}/{{- end }}repo/conf-green || true && echo "Ignoring errors if folder does not exist";
+{{- else }}
+      command: [ "sleep" ]
+      args: [ "infinity" ]
+{{- end }}
+      volumeMounts:
+      - mountPath: "/data"
+        name: octane-nfs
+      - mountPath: "/data/logs"
+        name: octane-nfs-log
+  volumes:
+  - name: octane-nfs
+    persistentVolumeClaim:
+      claimName: octane-claim-mount-efs-repo
+  - name: octane-nfs-log
+    persistentVolumeClaim:
+      claimName: octane-claim-mount-efs-log
+  restartPolicy: Never

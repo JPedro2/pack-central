@@ -1,0 +1,73 @@
+{{- if not .Values.global.isNginx }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: octane-ingress-public
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    #kubernetes.io/ingress.class: merge
+    #merge.ingress.kubernetes.io/config: {{ .Release.Namespace }}-ingress-public
+    alb.ingress.kubernetes.io/config: {{ .Release.Namespace }}-ingress-public
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.cloudflareSg }}
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.certificate }}
+    alb.ingress.kubernetes.io/healthcheck-port: "8443"
+    alb.ingress.kubernetes.io/healthcheck-path: "/admin/server/status"
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/actions.syncx-service: '{"Type": "forward", "TargetGroupArn": "{{ .Values.syncx.tg }}"}'
+    alb.ingress.kubernetes.io/actions.maintenance-page-redirect: '{"Type":"redirect","RedirectConfig":{"Host":"home.saas.microfocus.com","Path":"/myaccount/public/unavailable.html","Port":"443","Protocol":"HTTPS","Query":"","StatusCode":"HTTP_302"}}'
+    alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=600"
+    alb.ingress.kubernetes.io/actions.response-503: '{"Type":"fixed-response","FixedResponseConfig":{"ContentType":"text/plain","StatusCode":"503","MessageBody":"503 error text"}}'
+    alb.ingress.kubernetes.io/ssl-policy: 'ELBSecurityPolicy-FS-1-2-2019-08'
+  labels:
+    app: octane
+spec:
+  #ingressClassName: alb
+  rules:
+  {{- if .Values.global.maintenanceMode }}
+    - host: {{ .Values.cname }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: maintenance-page-redirect
+                port:
+                  name: use-annotation
+  {{- else }}
+    - host: {{ .Values.cname }}
+      http:
+        paths:
+      {{- if .Values.sync.enabled }}
+        - path: /sync/
+          pathType: Prefix
+          backend:
+            service:
+              name: syncx-service
+              port:
+                name: use-annotation
+      {{- end}}
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-prod-service
+              port:
+                number: 8443
+  {{- end }}
+  {{- if .Values.maintenanceCname }}
+    - host: {{ .Values.maintenanceCname }}
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-prod-service
+              port:
+                number: 8443
+  {{- end }}
+{{- end }}

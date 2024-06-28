@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: elasticsearch-pdb
+spec:
+  minAvailable: 100%
+  selector:
+    matchLabels:
+      app: elasticsearch

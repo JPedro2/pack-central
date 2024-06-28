@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-configuration
+  namespace: ingress-nginx
+  labels:
+    app: ingress-nginx
+data:
+  use-proxy-protocol: "true"
+  proxy-body-size: "0m"
+  client_max_body_size: "0m"
+  send_timeout: "600s"
+  proxy_connect_timeout: "600s"
+  proxy_send_timeout: "600s"
+  proxy_read_timeout: "600s"
+  proxy-buffer-size: "16k"
+  proxy-set-headers: "ingress-nginx/custom-headers"
+  enable-underscores-in-headers: "true"
+  use-forwarded-headers: "true"
+  server-snippet: |
+    listen 8443;
+  ssl-redirect: "false"

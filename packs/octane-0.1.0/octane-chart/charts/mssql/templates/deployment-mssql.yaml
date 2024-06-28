@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: mssql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mssql
+      annotations:
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
+    spec:
+      containers:
+        - name: mssql
+          image: {{ .Values.image }}
+          ports:
+            - containerPort: 1433
+              name: mssql
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 4096M
+            requests:
+              cpu: 1000m
+              memory: 1024M
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: {{ .Values.password }}

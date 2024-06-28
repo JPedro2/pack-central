@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-create-{{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-create-dir
+    namespace: {{ .Release.Namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+   server: {{ .Values.nfs.server }}
+   path: /
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-create-log-{{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-create-dir-log
+    namespace: {{ .Release.Namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+    server: {{ .Values.nfs.logServer }}
+    path: /
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-create-dir
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-create-dir-log
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: create-efs-dir
+  namespace: {{ .Release.Namespace }}
+spec:
+  containers:
+    - name: create-efs-dir
+      image: {{ .Values.image }}
+      ports:
+        - containerPort: 80
+      command: ['sh', '-c']
+      args:
+        - mkdir -p /data/{{ .Release.Namespace }}/repo;
+          mkdir -p /data/logs/{{ .Release.Namespace }}/logs;
+      volumeMounts:
+      - mountPath: "/data"
+        name: octane-nfs
+      - mountPath: "/data/logs"
+        name: octane-nfs-log
+  volumes:
+  - name: octane-nfs
+    persistentVolumeClaim:
+      claimName: octane-claim-create-dir
+  - name: octane-nfs-log
+    persistentVolumeClaim:
+      claimName: octane-claim-create-dir-log
+  restartPolicy: Never
