@@ -1,0 +1,13 @@
+{
+  "addonType": "system app",
+  "annotations": {
+    "source": "community",
+    "contributor": "spectrocloud"
+  },
+  "cloudTypes": ["all"],
+  "displayName": "MS SQL",
+  "kubeManifests": ["manifests/mssql.yaml"],
+  "layer": "addon",
+  "name": "mssql",
+  "version": "1.0.0"
+}

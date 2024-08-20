@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mssql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mssql
+      annotations:
+        "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
+    spec:
+      containers:
+        - name: mssql
+          image: {{ .Values.image }}
+          ports:
+            - containerPort: 1433
+              name: mssql
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 4096M
+            requests:
+              cpu: 1000m
+              memory: 1024M
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: {{ .Values.dbPassword }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      name: mssql
+  selector:
+    app: mssql
+
+####
+#add as custimzation 
+#---
+#apiVersion: scheduling.k8s.io/v1
+# kind: PriorityClass
+# metadata:
+#   name: high-mssql
+# value: 1000000
+# globalDefault: false
+# description: "This priority class is used for MSSQL pod."
+# ---
+# apiVersion: policy/v1
+# kind: PodDisruptionBudget
+# metadata:
+#   name: mssql-pdb
+# spec:
+#   minAvailable: 100%
+#   selector:
+#     matchLabels:
+#       app: mssql
+### 

@@ -1,0 +1,19 @@
+manifests.mssql.image:
+  # The application image.
+  # Ensure that the image follows the required format: registry/repository:version.
+  schema: '{{ required | format "${string}" | hints "Enter mssql container image. Ensure that it follows the required format: registry/repository:version." }}'
+
+manifests.mssql.dbPassword:
+  # The database password to connect the hello-universe-api to the hello-universe-db.
+  # The password should be specified as a base64 encoded string.
+  schema: '{{ required | format "${password}" | hints "Enter the mssql database password."}}'
+
+manifests.mssql.service.type:
+  # The cluster type on which the UI service will listen for incoming traffic.
+  # The node port or loadbalancer
+  schema: '{{ required | format "${string}" | hints "Enter the service type on which the mssql db will be exposed."}}'
+
+manifests.mssql.service.port:
+  # The cluster port number on which the UI service will listen for incoming traffic.
+  # The port should be specified as a number.
+  schema: '{{ required | format "${number}" | hints "Enter the port number on which the mssql db service will listen for incoming traffic."}}'

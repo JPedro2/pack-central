@@ -1,0 +1,19 @@
+pack:
+  content:
+    #Offline Pull
+    images:
+      - image: mcr.microsoft.com/mssql/server:2019-latest
+
+  #The namespace (on the target cluster) to install this pack
+  #When not found, a new namespace will be created
+  namespace: "mssql"
+  namespaceLabels:
+    "mssql": "pod-security.kubernetes.io/enforce=privileged,pod-security.kubernetes.io/enforce-version=v{{ .spectro.system.kubernetes.version | substr 0 4 }}"
+
+manifests:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    dbPassword: ""
+    service:
+      type: LoadBalancer
+      port: 1433
