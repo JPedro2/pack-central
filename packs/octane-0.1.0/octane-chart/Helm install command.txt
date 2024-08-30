@@ -1,1 +1,0 @@
-helm install octane kubernetes/helm/octane-chart --debug --wait --timeout 1200s --create-namespace --namespace=octane --values kubernetes/helm/octane-chart/octane-values-merged.yaml

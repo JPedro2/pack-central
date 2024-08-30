@@ -1,7 +1,0 @@
-apiVersion: scheduling.k8s.io/v1
-kind: PriorityClass
-metadata:
-  name: high-blue-{{ .Release.Namespace }}
-value: 1000000
-globalDefault: false
-description: "This priority class should be used for every Octane pod so they will not get evicted by less important pods."

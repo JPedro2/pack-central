@@ -1,9 +1,0 @@
-dependencies:
-  - name: mssql
-    repository: http://localhost:10191
-    version: 0.1.0
-    condition: mssql.enabled
-  - name: elasticsearch
-    repository: http://localhost:10191
-    version: 0.1.0
-    condition: elasticsearch.enabled

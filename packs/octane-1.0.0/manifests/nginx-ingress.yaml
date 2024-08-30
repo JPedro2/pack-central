@@ -1,11 +1,9 @@
-
-
 {{- if .Values.global.isNginx }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: main-ingress
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   annotations:
     ingress.kubernetes.io/affinity: cookie
     ingress.kubernetes.io/rewrite-target: /
@@ -13,7 +11,7 @@ metadata:
     ingress.kubernetes.io/session-cookie-name: route
     kubernetes.io/ingress.class: nginx
 spec:
-  #ingressClassName: nginx
+  ingressClassName: nginx
   rules:
   {{- if .Values.syncx.enabled }}
   - host: {{ .Values.cname }}
@@ -46,7 +44,7 @@ spec:
               name: octane-prod-service
               port:
                 number: 8080
-   {{- end}}
+  {{- end}}
   - host: {{ .Values.cname }}
     http:
       paths:

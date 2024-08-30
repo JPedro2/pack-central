@@ -1,0 +1,21 @@
+{
+    "addonType": "app services",
+    "annotations": {
+      "commit_msg": "Octane Application built for Spectro Cloud Palette",
+      "source": "community",
+      "contributor" : "spectrocloud"
+    },
+    "kubeManifests": [
+    "manifests/elasticsearch.yaml",
+    "manifests/nfs.yaml",
+    "manifests/nginx-ingress.yaml",
+    "manifests/octane.yaml"
+    ],
+    "cloudTypes": [
+      "all"
+    ],
+    "displayName": "Octane",
+    "layer":"addon",
+    "name": "octane",
+    "version": "1.0.0"
+}

@@ -1,0 +1,442 @@
+#################
+##octane-config##
+#################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: octane-configmap
+  namespace: {{ .Values.namespace }}
+data:
+  DB_SERVER_NAME: '{{.Values.db.server.name}}'
+  DB_SERVER_PORT: '{{.Values.db.server.port}}'
+  SCHEMA_NAME: '{{.Values.db.schema.name}}'
+  SERVICE_NAME: '{{.Values.db.service}}'
+  TABLE_SPACE: '{{.Values.db.tableSpace}}'
+  TEMP_TABLE_SPACE: '{{.Values.db.tempTableSpace}}'
+  DB_PROTOCOL: '{{.Values.db.protocol}}'
+  DB_TYPE: '{{.Values.db.type}}'
+  SITE_ACTION: '{{.Values.dbAction}}'
+  DISABLE_VALIDATOR_MEMORY: '{{.Values.disableValidatorMemory}}'
+  NGA_HEAP_SIZE: '{{.Values.ngaHeapSize}}'
+  ELASTIC_HOST: '{{.Values.elasticsearch.host}}'
+  ELASTIC_PORT: '{{.Values.elasticsearch.port}}'
+  ELASTIC_CLUSTER_NAME: '{{.Values.elasticsearch.clusterName}}'
+  SERVER_DOMAIN: '{{.Values.serverDomain}}'
+  SITEADMINISTRATOR_USER: '{{.Values.siteAdminstratorUser}}'
+  SITEADMINISTRATOR_PASSWORD: '{{.Values.siteAdminstratorPassword}}'
+  REPOSITORY_FOLDER: '{{.Values.repositoryFolder}}'
+  DISTRIBUTED_UUID: '{{.Values.distributedUuid}}'
+  INSTALLATION_FOLDER: '{{.Values.installationFolder}}'
+  WAR_FOLDER: '{{.Values.warFolder}}'
+  ENABLE_SERVICES_INTEGRATION: '{{.Values.enableServiceIntegration}}'
+  ENABLE_SYNCX_INTEGRATION: '{{.Values.enableSyncxIntegration}}'
+  IS_SAAS: '{{.Values.isSaas}}'
+  CUSTOM_CONTEXT_PATH_ENABLED: '{{.Values.custom_context_path_enabled}}'
+  BACK_OFFICE: '{{.Values.backOffice}}'
+  DOMAIN: '{{.Values.serverDomain}}'
+  SSO_MASTER_LOGIN_URL: '{{.Values.ssoMasterLoginUrl}}'
+  SSO_MASTER_LOGOUT_URL: '{{.Values.ssoMasterLogoutUrl}}'
+  SSO_REDIRECT_TO_APP_URL: '{{.Values.ssoRedirectToAppUrl}}'
+  SAAS_INTEGRATION_USERNAME: '{{.Values.saasIntegrationUsername}}'
+  SAAS_INTEGRATION_PASSWORD: '{{.Values.saasIntegrationPassword}}'
+  TERMINATE_SESSION_URL: '{{.Values.terminatedSessionsUrl}}'
+  TERMINATE_SESSION_URL_TIMEOUT_SECONDS: '{{.Values.terminatedSessionsTimeoutSeconds}}'
+  OAUTH_CLIENT_ID: '{{.Values.oauthClientId}}'
+  OAUTH_CLIENT_SECRET: '{{.Values.oauthClientSecret}}'
+  GET_OUATH_TOKEN_URL: '{{.Values.getOauthTokenUrl}}'
+  PROXY_NAME: '{{.Values.proxy.host}}'
+  PROXY_PORT: '{{.Values.proxy.port}}'
+  NON_PROXY_HOSTS: '{{.Values.proxy.nonProxyHosts}}'
+  EXPERIMENTS_ENV_TYPE: '{{.Values.experimentsEnvType}}'
+  OCTANE_SITE_PARAM_PROMETHEUS_MONITOR_CAPQ: '{{.Values.siteParam.prometheusMonitor.CAPQ}}'
+  OCTANE_SITE_PARAM_PROMETHEUS_MONITOR_DISTRUBUTED_CACHE: '{{.Values.siteParam.prometheusMonitor.distrubutedCache}}'
+  OCTANE_SITE_PARAM_PROMETHEUS_MONITOR_JVM: '{{.Values.siteParam.prometheusMonitor.jvm}}'
+  OCTANE_SITE_PARAM_PROMETHEUS_MONITOR_NON_DISTRIBUTED_CACHE: '{{.Values.siteParam.prometheusMonitor.nonDistrubutedCache}}'
+  OCTANE_SITE_PARAM_PROMETHEUS_MONITOR_REST_API: '{{.Values.siteParam.prometheusMonitor.restApi}}'
+  OCTANE_SITE_PARAM_EXPOSE_SERVER_TIMING_HEADER: '{{.Values.siteParam.exposeServerTimingHeader}}'
+  OCTANE_SITE_PARAM_EXPOSE_FULL_EXCEPTION_FOR_REST: '{{.Values.siteParam.exposeFullExceptionForRest}}'
+  OCTANE_SITE_PARAM_SUPPORT_EXTENSION_BUNDLES: '{{.Values.siteParam.supportExtensionBundles}}'
+  KUBERNETES_NAMESPACE: '{{.Values.namespace}}'
+  CHANGE_LOG_FOLDER: 'true'
+  APP_URL: '{{.Values.appUrl}}'
+  SL_BDI_URL: '{{.Values.slBdiUrl}}'
+  CONFIG_S3_APPENDER: '{{.Values.configS3Appender}}'
+  CONFIG_JSON_APPENDER: '{{.Values.configJSONAppender}}'
+  LOGGLY_OCTANE_INSTANCE: octane
+  S3_LOG_BUCKET: '{{.Values.s3LogBucket}}'
+  S3_LOG_PATH: '{{.Values.s3LogPath}}'
+  S3_LOG_REGION: '{{.Values.s3LogRegion}}'
+  SL_OPB_URL: '{{.Values.slOpbUrl}}'
+  SL_SYNC_URL: '{{.Values.slSyncUrl}}'
+  AUTHENTICATION_TYPE: '{{.Values.authenticationType}}'
+  INTERNAL_SSO: '{{.Values.internalSso}}'
+  SSO_LOGIN_SAML2_IDP_METADATA_URL: '{{.Values.idpUrl}}'
+  ELASTIC_SNIFF: '{{.Values.elasticsearch.sniff}}'
+  IS_CLUSTER: '{{.Values.cluster.isCluster}}'
+  HAZELCAST_CLUSTER_NODES: '{{.Values.cluster.nodes}}'
+  DEBUG: '{{.Values.enableDebug}}'
+  DEBUG_PORT: '{{.Values.debugPort}}'
+  NEW_UID: '{{.Values.global.docker_uid}}'
+  NEW_GID: '{{.Values.global.docker_gid}}'
+  DEFAULT_SPACE_MODE: 'shared'
+  SET_XPACK: '{{.Values.setXPack}}'
+  ELASTIC_KEYSTORE_PASS: '{{.Values.xpackKeystorePass}}'
+  LOGS_UPLOAD_METHOD: '{{.Values.logs_upload_method}}'
+  DEFAULT_SPACE_NAME: '{{.Values.defaultSharedSpaceName}}'
+  DISABLE_DOS_FILTER: 'true'
+  KUBERNETES_SERVICE_LABEL_VALUE: '{{.Values.hazelcastSlot}}'
+  USER_JAVA_PROPERTIES: '{{.Values.javaProperties}}'
+  LANGUAGES: '{{.Values.languages}}'
+  USE_CUSTOM_SECRET_FILE: 'true'
+
+  {{- if .Values.updateGoogleAnalytics }}
+  OCTANE_SITE_PARAM_GOOGLE_ANALYTICS_TOKEN: '{{.Values.siteParam.googleAnalyticsToken}}'
+  OCTANE_SITE_PARAM_GOOGLE_ANALYTICS_MEASUREMENT_ID: '{{.Values.siteParam.googleAnalyticsMeasurmentId}}'
+  OCTANE_SITE_PARAM_GOOGLE_ANALYTICS_API_SECRET: '{{.Values.siteParam.googleAnalyticsAPISecret}}'
+  {{- end }}
+---
+##################
+##octane-secrets##
+##################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: octane-secrets
+  namespace: {{ .Values.namespace }}
+type: Opaque
+stringData:
+  secret_env_file.properties: |
+    SCHEMA_PASSWORD='{{.Values.db.schema.password}}'
+    DB_ADMIN_USER='{{.Values.db.admin.user}}'
+    DB_ADMIN_PASSWORD='{{.Values.db.admin.password}}'
+    DB_LOGIN_USER='{{.Values.db.server.dbLoginUser}}'
+    ELASTICSEARCH_USERNAME='{{.Values.elasticsearch.username}}'
+    ELASTICSEARCH_PASSWORD='{{.Values.elasticsearch.password}}'
+    INIT_STRING='{{.Values.initString}}'
+    AUTH_TOKEN_ENCRYPTION_KEY='{{.Values.authTokenEncryptionKey}}'
+    INTERNAL_CERTIFICATE='{{.Values.internalCertificate}}'
+---
+########################
+#docker-registry-secret#
+########################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regsecret
+  namespace: {{ .Values.namespace }}
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: '{{.Values.dockerRegistrySecret}}'
+---
+#########################
+##octane-hazelcast-rbac##
+#########################
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hazelcast-octane-rbac
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Values.namespace }}
+---
+########################
+##octane-blue-manifest##
+########################
+{{- if and .Values.enabled .Values.blue.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octane-deployment-blue
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: octane
+      slot: blue
+  replicas: {{ .Values.blue.replicas | default .Values.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        farm: {{ .Values.namespace }}
+        app: octane
+        slot: blue
+    spec:
+      terminationGracePeriodSeconds: 300
+      priorityClassName: high-blue-{{ .Values.namespace }}
+      containers:
+      - name: octane-blue
+        image: {{ default "lifecyclemanagement/octane" .Values.blue.image }}
+        resources:
+          limits:
+            cpu: {{ add .Values.cpuRequest .Values.cpuLimitAddition }}m
+            memory: {{ add .Values.memRequest .Values.memLimitAddition }}M
+          requests:
+            cpu: {{ .Values.cpuRequest }}m
+            memory: {{ .Values.memRequest }}M
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        {{- if .Values.enableDebug }}
+        - name: debug
+          containerPort: {{ .Values.debugPort }}
+        {{- end }}
+        lifecycle:
+        {{- if eq "blue" "red" }}
+          postStart:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - >
+                  status="";
+                  timeout=300;
+                  while [ -z "$status" ] && [ $timeout -gt 0 ]; do
+                    status=$(curl -s -k --write-out %{http_code} https://localhost:8443/admin/server/status --noproxy localhost |grep 200);
+                    timeout=$(( $timeout - 10 ));
+                    sleep 10;
+                  done;
+                  curl -v -k -sS -XPOST -H "Content-Type: application/json" -c /opt/octane/cookies.txt -d '{"user":"{{ .Values.siteAdminstratorUser }}","password":"{{ .Values.siteAdminstratorPassword }}"}' https://localhost:8443/authentication/sign_in;
+                  curl -v -k -sS -XPUT  -H "Content-Type: application/json" -H "Accept: application/json" -H "HPECLIENTTYPE: HPE_MQM_UI" -b /opt/octane/cookies.txt -d '{"data":[{"role":"WORKER"}]}' https://localhost:8443/admin/servers?query=\"name=\'https://${POD_NAME}:8443\'\"
+        {{- end }}
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","runuser -m -u octane /opt/octane/wrapper/HPALM stop"]
+        volumeMounts:
+        - mountPath: "/opt/octane/secrets"
+          name: secret-emptydir
+        - mountPath: "/opt/octane/repo"
+          name: octane-nfs
+          {{- if .Values.setEfsSubPath }}
+          subPath: octane/repo
+          {{- else }}
+          subPath: repo
+          {{- end }}
+        - mountPath: "/logs"
+          {{- if .Values.hasLogEfs }}
+          name: octane-nfs-log
+          {{- else }}
+          name: octane-nfs
+          {{- end }}
+          {{- if .Values.setEfsSubPath }}
+          subPath: octane/logs
+          {{- else }}
+          subPath: ""
+          {{- end }}
+        {{- if .Values.setXPack }}
+        - mountPath: "/opt/octane/certs"
+          name: xpack-cert
+          readOnly: true
+        {{- end }}
+        envFrom:
+        - configMapRef:
+            name: octane-configmap
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: LOG_FOLDER
+          value: /logs/$(POD_NAME)
+        livenessProbe:
+          httpGet:
+            path: {{ if eq .Values.pathContext "/" }}{{ else }}{{ .Values.pathContext }}{{ end }}/admin/server/version
+            {{- if .Values.global.isNginx }}
+            port: 8080
+            scheme: "HTTP"
+            {{- else }}
+            port: 8443
+            scheme: "HTTPS"
+            {{- end }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          {{- if .Values.enableDebug }}
+          failureThreshold: 50000
+          {{- else }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+        readinessProbe:
+          exec:
+            {{- if .Values.global.isNginx }}
+            command: [ 'bash', '-c', 'curl -s -k --write-out %{http_code} http://localhost:8080{{ if eq .Values.pathContext "/" }}{{ else }}{{ .Values.pathContext }}{{ end }}/admin/server/version --noproxy localhost |grep 200 || exit 1']
+            {{- else }}
+            command: ['bash', '-c', 'curl -s -k --write-out %{http_code} https://localhost:8443/admin/server/version --noproxy localhost |grep 200 || exit 1']
+            {{- end }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+      initContainers:
+      - name: oracle-listener
+        image: {{ default "guetta14/alpine_rsync:latest" .Values.alpineImage }}
+        command: ['sh', '-c', "for i in $(seq 1 200); do nc -z -w3 {{ .Values.db.server.name }} {{ .Values.db.server.port }} && exit 0 || sleep 3; done; exit 1"]
+        resources:
+          requests:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+          limits:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+      - name: elasticsearch-listener
+        image: {{ default "guetta14/alpine_rsync:latest" .Values.alpineImage }}
+        command: ['sh', '-c', "for i in $(seq 1 200); do nc -z -w3 {{ .Values.elasticsearch.host }} 9300 && exit 0 || sleep 3; done; exit 1"]
+        resources:
+          requests:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+          limits:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+      - name: setup-configs
+        image: {{ default "guetta14/alpine_rsync:latest" .Values.alpineImage }}
+        command: [ 'sh', '-c', "cp /tmp/secretfolder/secret_env_file.properties /tmp/emptyfolder/" ]
+        resources:
+          requests:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+          limits:
+            cpu: {{ .Values.initCpuSize }}m
+            memory: {{ .Values.initHeapSize }}M
+        volumeMounts:
+        - mountPath: /tmp/secretfolder/
+          name: octane-secrets
+        - mountPath: /tmp/emptyfolder/
+          name: secret-emptydir
+      imagePullSecrets:
+      - name: regsecret
+      volumes:
+      - name: octane-nfs
+        persistentVolumeClaim:
+          claimName: octane-claim
+      - name: octane-secrets
+        secret:
+          secretName: octane-secrets
+          items:
+          - key: "secret_env_file.properties"
+            path: "secret_env_file.properties"
+      - name: secret-emptydir
+        emptyDir: { }
+      {{- if .Values.hasLogEfs }}
+      - name: octane-nfs-log
+        persistentVolumeClaim:
+          claimName: octane-claim-log
+      {{- end }}
+      {{- if .Values.setXPack }}
+      - name: xpack-cert
+        secret:
+          secretName: elastic-xpack-secret
+      {{- end }}
+
+{{- end }}
+---
+###################################
+##service-octane-staging-manifest##
+###################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: octane-staging-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: octane
+    {{- if eq .Values.productionSlot "blue" }}
+    hazelcast: green
+    {{- else }}
+    hazelcast: blue
+    {{- end }}
+  annotations: {}
+      #alb.ingress.kubernetes.io/target-type: ip
+      #alb.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  type: "{{ .Values.service.type }}"
+  ports:
+    - port: 8080
+      name: http
+    - port: 8443
+      name: https
+  selector:
+    app: octane
+    {{- if eq .Values.productionSlot "blue" }}
+    slot: green
+    {{- else }}
+    slot: blue
+    {{- end }}
+---
+######################################
+##service-octane-production-manifest##
+######################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: octane-prod-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: octane
+    hazelcast: {{ .Values.productionSlot }}
+  annotations:
+    #alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    #alb.ingress.kubernetes.io/target-type: ip
+    prometheus.io/port: "8443"
+    prometheus.io/scrape: "true"
+spec:
+  type: "{{ .Values.service.type }}"
+  ports:
+    - port: 8080
+      name: http
+      {{- if contains "NodePort" .Values.service.type }}
+      {{- if .Values.service.nodePort }}
+      nodePort:  {{ .Values.service.nodePort }}
+      {{- end }}
+      {{- end }}
+    - port: 8443
+      name: https
+      {{- if contains "NodePort" .Values.service.type }}
+      {{- if .Values.service.httpsNodePort }}
+      nodePort:  {{ .Values.service.httpsNodePort }}
+      {{- end }}
+      {{- end }}
+    {{- if .Values.enableDebug }}
+    - port: {{ .Values.debugPort }}
+      name: debug
+    {{- end }}
+  selector:
+    app: octane
+    slot: {{ .Values.productionSlot }}
+---
+################################
+##octane-pod-disruption-budget##
+################################
+{{- if .Values.doNotReallocateByAutoscaller }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: octane-pdb
+spec:
+  minAvailable: 100%
+  selector:
+    matchLabels:
+      app: octane
+{{- end }}
+---
+#########################
+##octane-priority-class##
+#########################
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-blue-octane
+value: 1000000
+globalDefault: false
+description: "This priority class should be used for every Octane pod so they will not get evicted by less important pods."
