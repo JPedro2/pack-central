@@ -1,0 +1,212 @@
+pack:
+  content:
+    images:
+      - image: docker.elastic.co/elasticsearch/elasticsearch:8.13.0
+      - image: lifecyclemanagement/octane
+      - image: guetta14/alpine_rsync:latest
+
+  #The namespace (on the target cluster) to install this chart
+  #When not found, a new namespace will be created
+  namespace: "octane"
+
+manifests:
+  octane:
+    enabled: true
+    enableDebug: false
+    blue:
+      enabled: true
+      image: "lifecyclemanagement/octane"
+      replicas: 2
+    replicas: 2
+    namespace: octane
+    dockerRegistrySecret: "<Docker config file base64 encoded>"
+    installationFolder: "/opt/octane/install"
+    warFolder: "/opt/octane/webapps/root"
+    cluster:
+      isCluster: false
+      nodes: kubernetes_auto_discovered
+    service:
+      type: ""
+      nodePort: ""
+      httpsNodePort: ""
+    db:
+      server:
+        port: 1433
+        dbLoginUser: octaneadmin
+        name: octane-mssql
+      schema:
+        password: ""
+        name: sa_octane
+      service: ""
+      admin:
+        user: "sa"
+        password: ""
+      protocol: jdbc:sqlserver
+      type: MSSQL
+      tableSpace: ""
+      tempTableSpace: ""
+    dbAction: CREATE_NEW
+    ngaHeapSize: 4096
+    memRequest: 6000
+    cpuRequest: 1500
+    memLimitAddition: 0
+    cpuLimitAddition: 0
+    initHeapSize: 100
+    initCpuSize: 100
+    limitToOctaneNode: true
+    elasticsearch:
+      username: "es_admin"
+      password: ""
+      clusterName: elasticsearch
+      host: "octane-es"
+      port: ""
+      sniff: ""
+    serverDomain: microfocus.com
+    siteAdminstratorUser: koko
+    siteAdminstratorPassword: ""
+    initString: 'Do one thing every day that scares you. -Eleanor Roosevelt'
+    authTokenEncryptionKey: ""
+    repositoryFolder: ""
+    distributedUuid: hazelcastpw
+    backOffice: ""
+    authenticationType: "internal"
+    internalSso: "false"
+    idpUrl: ""
+    ssoMasterLoginUrl: ""
+    ssoMasterLogoutUrl: ""
+    ssoRedirectToAppUrl: ""
+    saasIntegrationUsername: ""
+    saasIntegrationPassword: ""
+    disableValidatorMemory: true
+    terminatedSessionsTimeoutSeconds: 30
+    oauthClientId: ""
+    oauthClientSecret: ""
+    terminatedSessionsUrl: ""
+    getOauthTokenUrl: ""
+    proxy:
+      host: ""
+      port: ""
+      nonProxyHosts: ""
+    isSaas: true
+    configJSONAppender: true
+    configS3Appender: false
+    logs_upload_method: jsonAppender
+    updateGoogleAnalytics: false
+    siteParam:
+      exposeFullExceptionForRest: ""
+      exposeServerTimingHeader: true
+      supportExtensionBundles: true
+      googleAnalyticsToken: ""
+      googleAnalyticsMeasurmentId: ""
+      googleAnalyticsAPISecret: ""
+      prometheusMonitor:
+        CAPQ: false
+        distrubutedCache: false
+        jvm: false
+        nonDistrubutedCache: false
+        restApi: false
+    setEfsSubPath: true
+    setXPack: true
+    xpackKeystorePass: ""
+    hasLogEfs: true
+    pathContext: /
+    custom_context_path_enabled: false
+    debugPort: 5005
+    javaProperties: sun.net.inetaddr.ttl=0
+    readinessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 15
+      timeoutSeconds: 10
+      failureThreshold: 50000
+    livenessProbe:
+      initialDelaySeconds: 1800
+      periodSeconds: 15
+      timeoutSeconds: 10
+      failureThreshold: 2
+    productionSlot: blue
+    hazelcastSlot: blue
+    alpineImage: guetta14/alpine_rsync:latest
+    doNotReallocateByAutoscaller: false
+    ttl:
+      enabled: false
+    languages: ""
+    slBdiUrl: https://octane.almoctane.com
+    slOpbUrl: https://octane.almoctane.com
+    slSyncUrl: https://octane.almoctane.com
+    s3LogPath: octane_logs
+    s3LogRegion: ""
+    s3LogBucket: ""
+    dashboardUrl: octane-dash.almoctane.com
+    internalCertificate: ""
+    experimentsEnvType: dev
+    appUrl: https://octane.almoctane.com
+    enableServiceIntegration: false
+    global:
+      isNginx: true
+      docker_uid: ""
+      docker_gid: ""
+    enableSyncxIntegration: ""
+    defaultSharedSpaceName: ""
+
+  nfs:
+    namespace: octane
+    octane:
+      hasLogEfs: true
+    global:
+      storage: 10Ti
+    server: "<NFS_FILESYSTEM>"
+    path: /
+    logServer: "<NFS_FILESYSTEM>"
+    logPath: /
+
+  nginx-ingress:
+    namespace: octane
+    global:
+      isNginx: true
+    syncx:
+      enabled: false
+    cname: ""
+    internalElb: ""
+    internalCname: ""
+    octane:
+      pathContext: /
+    elasticsearch:
+      enabled: false
+      cname: ""
+
+  # nfs:
+  #   namespace: octane
+  #   octane:
+  #     setEfsSubPath: true
+  #     hasLogEfs: true
+  #   image: guetta14/alpine_rsync:latest
+  #   deleteConf: false
+  #   backupConf: false
+  #   restoreConf: false
+  #   global:
+  #     maintenanceMode: false
+  #     storage: 10Ti
+  #     isNginx: true
+  #   server: "<NFS_FILESYSTEM>"
+  #   path: /
+  #   logServer: "<NFS_FILESYSTEM>"
+  #   logPath: /
+
+
+  #certificateEls:
+  #  folder: ""
+  #  bucket: ""
+  #cloudflareCertificate: ""
+  #cnamep: octanep.almoctane.com
+  #syncxCname: octanex.almoctane.com
+  #maintenanceCname: octane-maint.almoctane.com
+  #clusterName: eks-octane
+  #sync:
+  #  tg: ""
+  #prometheus:
+  #  nfs:
+  #    server: ""
+  #managementSg: ""
+  #cloudflareSg: ""
+
+  

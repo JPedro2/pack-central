@@ -1,0 +1,79 @@
+###########
+##nfs-pvc##
+###########
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.global.storage }}
+---
+###############
+##nfs-pvc-log##
+###############
+{{ if .Values.octane.hasLogEfs }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: octane-claim-log
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.global.storage }}
+{{ end }}
+---
+##########
+##nfs-pv##
+##########
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv
+spec:
+  capacity:
+    storage: {{ .Values.global.storage }}
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim
+    namespace: {{ .Values.namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+   server: {{ .Values.server }}
+   path: {{ .Values.path }}
+---
+##############
+##nfs-pv-log##
+##############
+{{ if .Values.octane.hasLogEfs }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: octane-nfs-pv-log
+spec:
+  capacity:
+    storage: {{ .Values.global.storage }}
+  accessModes:
+    - ReadWriteMany
+  claimRef:
+    name: octane-claim-log
+    namespace: {{ .Values.namespace }}
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - noresvport
+  nfs:
+   server: {{ .Values.logServer }}
+   path: {{ .Values.logPath }}
+{{ end }}

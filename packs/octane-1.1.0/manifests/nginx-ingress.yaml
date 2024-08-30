@@ -1,0 +1,70 @@
+{{- if .Values.global.isNginx }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    ingress.kubernetes.io/affinity: cookie
+    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/session-cookie-hash: sha1
+    ingress.kubernetes.io/session-cookie-name: route
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+  {{- if .Values.syncx.enabled }}
+  - host: {{ .Values.cname }}
+    http:
+      paths:
+        - path: /sync
+          pathType: Prefix
+          backend:
+            service:
+              name: syncx-service
+              port:
+                number: 80
+  - host: {{ .Values.internalElb }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-prod-service
+              port:
+                number: 8080
+  - host: {{ .Values.internalCname }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-prod-service
+              port:
+                number: 8080
+  {{- end}}
+  - host: {{ .Values.cname }}
+    http:
+      paths:
+        - path: {{ .Values.octane.pathContext}}
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-prod-service
+              port:
+                number: 8080
+  {{- if .Values.elasticsearch.enabled }}
+  - host: {{ .Values.elasticsearch.cname }}
+    http:
+      paths:
+        - path: {{ .Values.octane.pathContext}}
+          pathType: Prefix
+          backend:
+            service:
+              name: octane-es
+              port:
+                number: 9200
+  {{- end }}
+{{- end }}
