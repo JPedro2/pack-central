@@ -6,7 +6,6 @@
       "contributor" : "spectrocloud"
     },
     "kubeManifests": [
-    "manifests/nfs.yaml",
     "manifests/nginx-ingress.yaml",
     "manifests/octane.yaml"
     ],

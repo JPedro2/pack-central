@@ -108,7 +108,6 @@ manifests:
     setEfsSubPath: true
     setXPack: true
     xpackKeystorePass: ""
-    hasLogEfs: true
     pathContext: /
     custom_context_path_enabled: false
     debugPort: 5005
@@ -147,17 +146,13 @@ manifests:
       docker_gid: ""
     enableSyncxIntegration: ""
     defaultSharedSpaceName: ""
-
-  nfs:
-    namespace: octane
-    octane:
-      hasLogEfs: true
-    global:
+    nfs:
       storage: 10Ti
-    server: "<NFS_FILESYSTEM>"
-    path: /
-    logServer: "<NFS_FILESYSTEM>"
-    logPath: /
+      storageClassName: spectro-storage-class-efs
+      hasLogEfs: true
+      pvc:
+        pvcAppName: "octane-claim"
+        pvcLogName: "octane-claim-log"
 
   nginx-ingress:
     namespace: octane

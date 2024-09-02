@@ -144,6 +144,40 @@ subjects:
     name: default
     namespace: {{ .Values.namespace }}
 ---
+###########
+##nfs-pvc##
+###########
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.nfs.pvc.pvcAppName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.nfs.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.nfs.storage }}
+---
+###############
+##nfs-pvc-log##
+###############
+{{ if .Values.nfs.hasLogEfs }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.nfs.pvc.pvcLogName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.nfs.storageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.nfs.storage }}
+{{ end }}
+---
 ########################
 ##octane-blue-manifest##
 ########################
@@ -224,7 +258,7 @@ spec:
           subPath: repo
           {{- end }}
         - mountPath: "/logs"
-          {{- if .Values.hasLogEfs }}
+          {{- if .Values.nfs.hasLogEfs }}
           name: octane-nfs-log
           {{- else }}
           name: octane-nfs
@@ -319,7 +353,7 @@ spec:
       volumes:
       - name: octane-nfs
         persistentVolumeClaim:
-          claimName: octane-claim
+          claimName: {{ .Values.nfs.pvc.pvcAppName }}
       - name: octane-secrets
         secret:
           secretName: octane-secrets
@@ -328,10 +362,10 @@ spec:
             path: "secret_env_file.properties"
       - name: secret-emptydir
         emptyDir: { }
-      {{- if .Values.hasLogEfs }}
+      {{- if .Values.nfs.hasLogEfs }}
       - name: octane-nfs-log
         persistentVolumeClaim:
-          claimName: octane-claim-log
+          claimName: {{ .Values.nfs.pvc.pvcLogName }}
       {{- end }}
       {{- if .Values.setXPack }}
       - name: xpack-cert
