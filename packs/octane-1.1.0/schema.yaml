@@ -1,0 +1,190 @@
+manifests.octane.enabled:
+  # The namespace in which the UI application will be deployed.
+  # The namespace should be specified as a string.
+  schema: '{{ required | format "${boolean}" | hints "Enter the namespace in which the application will be deployed."}}'
+
+manifests.octane.blue.enabled:
+  # The namespace in which the UI application will be deployed.
+  # The namespace should be specified as a string.
+  schema: '{{ required | format "${string}" | hints "Enter the namespace in which the application will be deployed."}}'
+
+manifests.octane.blue.image:
+  # The application image.
+  # Ensure that the image follows the required format: registry/repository:version.
+  schema: '{{ required | format "${string}" | hints "Enter the UI application image. Ensure that it follows the required format: registry/repository:version." }}'
+
+manifests.octane.namespace:
+  # The namespace in which the UI application will be deployed.
+  # The namespace should be specified as a string.
+  schema: '{{ required | format "${string}" | hints "Enter the namespace in which the application will be deployed."}}'
+
+manifests.octane.dockerRegistrySecret:
+  schema: '{{ required | format "${string} | hints "Must be base64 encoded"}}'
+
+manifests.octane.installationFolder:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.warFolder:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.cluster.isCluster:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.db.server.port:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.db.server.dbLoginUser:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.db.server.name:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.db.schema.name:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.db.admin.user:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.db.admin.password:
+  schema: '{{ required | format "${password}"}}'
+
+manifests.octane.db.protocol:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.db.type:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.dbAction:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.ngaHeapSize:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.memRequest:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.cpuRequest:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.memLimitAddition:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.cpuLimitAddition:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.initHeapSize:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.initCpuSize:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.limitToOctaneNode:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.elasticsearch.username:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.elasticsearch.password:
+  schema: '{{ required | format "${password}"}}'
+
+manifests.octane.elasticsearch.clusterName:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.elasticsearch.host:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.serverDomain:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.siteAdminstratorUser:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.siteAdminstratorPassword:
+  schema: '{{ required | format "${password}"}}'
+
+manifests.octane.distributedUuid:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.authenticationType:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.internalSso:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.disableValidatorMemory:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.terminatedSessionsTimeoutSeconds:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.isSaas:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.configJSONAppender:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.configS3Appender:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.logs_upload_method:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.updateGoogleAnalytics:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.exposeServerTimingHeader:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.supportExtensionBundles:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.prometheusMonitor.CAPQ:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.prometheusMonitor.distrubutedCache:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.prometheusMonitor.jvm:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.prometheusMonitor.nonDistrubutedCache:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.siteParam.prometheusMonitor.restApi:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.setEfsSubPath:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.setXPack:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.pathContext:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.custom_context_path_enabled:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.debugPort:
+  schema: '{{ required | format "${number}"}}'
+
+manifests.octane.javaProperties:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.productionSlot:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.hazelcastSlot:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.hazealpineImagelcastSlot:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.alpineImage:
+  schema: '{{ required | format "${string}"}}'
+
+manifests.octane.doNotReallocateByAutoscaller:
+  schema: '{{ required | format "${boolean}"}}'
+
+manifests.octane.ttl.enabled:
+  schema: '{{ required | format "${boolean}"}}'
