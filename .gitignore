@@ -1,1 +1,3 @@
 *.tar.gz
+*.sh
+*.DS_Store
